@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResiSolve | Apartment Complaint Portal</title>
+
+    <!-- Google Fonts: Outfit for a modern, premium look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="login-container">
+        <div class="login-box glass-panel">
+            <div class="brand large">
+                <i class="ph-fill ph-buildings"></i>
+                <span>ResiSolve</span>
+            </div>
+            <p class="login-subtitle">Welcome back! Please login to your account.</p>
+
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="cta-button">
+                    <i class="ph-bold ph-sign-in"></i>
+                    Login
+                </button>
+            </form>
+            <p id="login-error" class="error-msg" style="display: none;">Invalid credentials. Please try again.</p>
+        </div>
+    </div>
+
+    <!-- Main App Container (Hidden by default) -->
+    <div class="app-container" id="main-app" style="display: none;">
+        <!-- Sidebar / Navigation -->
+        <nav class="sidebar">
+            <div class="brand">
+                <i class="ph-fill ph-buildings"></i>
+                <span>ResiSolve</span>
+            </div>
+
+            <div class="nav-metrics">
+                <div class="metric-card">
+                    <span class="label">Open Issues</span>
+                    <span class="value" id="open-count">0</span>
+                </div>
+                <div class="metric-card">
+                    <span class="label">Resolved</span>
+                    <span class="value" id="resolved-count">0</span>
+                </div>
+            </div>
+
+            <div class="nav-footer">
+                <button id="theme-toggle" class="theme-btn" title="Toggle Theme">
+                    <i class="ph-fill ph-moon"></i>
+                    <span>Dark Mode</span>
+                </button>
+                <button id="logout-btn" class="theme-btn secondary" title="Logout">
+                    <i class="ph ph-sign-out"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header>
+                <h1>Community Issues</h1>
+                <p>Track and resolve apartment maintenance requests transparently.</p>
+            </header>
+
+            <div class="content-grid">
+                <!-- Submission Form -->
+                <section class="form-section glass-panel">
+                    <div class="section-header">
+                        <i class="ph-duotone ph-warning-circle"></i>
+                        <h2>Report an Issue</h2>
+                    </div>
+
+                    <form id="complaint-form">
+                        <div class="form-group">
+                            <label for="flat-number">Flat Number</label>
+                            <input type="text" id="flat-number" placeholder="e.g. 402, 5B" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <div class="select-wrapper">
+                                <select id="category" required>
+                                    <option value="" disabled selected>Select an issue type...</option>
+                                    <option value="Water Leakage">💧 Water Leakage</option>
+                                    <option value="Power Failure">⚡ Power Failure</option>
+                                    <option value="Lift Malfunction">🛗 Lift Malfunction</option>
+                                    <option value="Garbage/Hygiene">🗑️ Garbage/Hygiene</option>
+                                    <option value="Noise Complaint">🔊 Noise Complaint</option>
+                                    <option value="Other">📝 Other</option>
+                                </select>
+                                <i class="ph ph-caret-down"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="urgency">Urgency</label>
+                            <div class="radio-group">
+                                <label class="radio-option low">
+                                    <input type="radio" name="urgency" value="Low" required>
+                                    <span>Low</span>
+                                </label>
+                                <label class="radio-option medium">
+                                    <input type="radio" name="urgency" value="Medium">
+                                    <span>Medium</span>
+                                </label>
+                                <label class="radio-option high">
+                                    <input type="radio" name="urgency" value="High">
+                                    <span>High</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea id="description" rows="4" placeholder="Describe the issue in detail..."
+                                required></textarea>
+                        </div>
+
+                        <button type="submit" class="cta-button">
+                            <i class="ph-bold ph-paper-plane-right"></i>
+                            Submit Complaint
+                        </button>
+                    </form>
+                </section>
+
+                <!-- Complaint List -->
+                <section class="list-section">
+                    <div class="list-header">
+                        <h2>Recent Activity</h2>
+                        <div class="list-actions">
+                            <div class="filter-tabs">
+                                <button class="filter-btn active" data-filter="all">All</button>
+                                <button class="filter-btn" data-filter="open">Open</button>
+                                <button class="filter-btn" data-filter="resolved">Resolved</button>
+                            </div>
+                            <button id="clear-resolved" class="reset-btn" title="Clear Resolved Complaints">
+                                <i class="ph ph-trash"></i>
+                                <span>Clear Resolved</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="complaints-list" class="complaints-container">
+                        <!-- Items will be injected here by JS -->
+                        <div class="empty-state">
+                            <i class="ph-duotone ph-clipboard-text"></i>
+                            <p>No complaints filed yet.</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
